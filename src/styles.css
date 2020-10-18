@@ -1,0 +1,88 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+html, body{
+  height: 100%;
+}
+
+.wrapper {
+    font-family: 'PT Sans', sans-serif;
+    height: auto !important;
+    min-height: 100%; 
+    --bg: #FCFCFC;
+    --bg-panel: #EBEBEB;
+    --color-headings: #0077FF;
+    --color-text: #333333;
+}
+
+.wrapper[data-theme='dark'] {
+    --bg: #333333;
+    --bg-panel: #434343;
+    --color-headings: #3694FF;
+    --color-text: #B5B5B5;
+}
+
+.wrapper{
+  background-color: var(--bg);
+}
+
+.card, li {
+  background-color: var(--bg-panel);
+  color: var(--color-text);
+}
+.card {
+  max-height: 250px;
+  
+}
+
+.article-name {
+  overflow: hidden;
+  max-height: 2.4em; 
+}
+.article-snippet{
+  overflow: hidden;
+  position: relative; 
+  line-height: 1.5em;
+  max-height: 6em; 
+  text-align: justify;  
+  margin-right: -1em;
+  padding-right: 1em;
+}
+
+.article-snippet:before {
+  content: '...';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.article-snippet:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+  background: white;
+}
+
+p, label {
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-headings);
+}
+
+app-header {
+  color: var(--color-text);
+}
+
+.material-icons {
+  color: var(--color-text);
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

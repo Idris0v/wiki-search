@@ -1,0 +1,8 @@
+<div class="wrapper" [attr.data-theme]="isThemeLight ? 'light' : 'dark'">
+  <app-header [isThemeLight]="isThemeLight" (toggleTheme)="changeTheme($event)"></app-header>
+
+  <div class="container">
+    <app-search></app-search>
+  </div>
+  <app-footer></app-footer>
+</div>

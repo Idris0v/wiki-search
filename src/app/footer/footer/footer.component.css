@@ -1,0 +1,8 @@
+button {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    border: none;
+    background-color: transparent;
+    outline: transparent;
+}

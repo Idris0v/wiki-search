@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="md-form col-md-12 mb-3">
+    <label for="searchInput">Введите свой запрос</label>
+    <input #searchInput type="text" [formControl]="queryField" class="form-control" placeholder="Начни писать!" [value]="searchValue" (keyup.enter)="handleClick(searchInput.value)">
+    <ul id="suggestions" class="filter-select">
+      <li *ngFor="let suggestion of (suggestions$ | async)" class="filter-select-list" (click)="handleClick(suggestion)">
+      <p>{{suggestion}}</p>
+    </ul>
+    <div class="float-right mt-3 ml-3">
+    <button class="btn btn-primary" (click)="handleClick(searchInput.value)">Найти</button>
+    </div>
+    <select *ngIf="articles.length > 0" [(ngModel)]="selectedSortType" class="float-right custom-select mt-3 col-sm-6 col-lg-3" id="country" (ngModelChange)="sortCards($event)">
+      <option value="" disabled>Сортировать</option>
+      <option value="relevance">По релевантности</option>
+      <option value="ascending">Больше символов</option>
+      <option value="descending">Меньше символов</option>
+    </select>
+  </div>
+</div>
+
+<app-error-message [message]="errorMessage$"></app-error-message>
+<div (click)="delQuery(query.id)" *ngFor="let query of queries$ | async">{{query.query}}</div>
+
+<div class="row mb-2">
+  <div *ngFor="let article of articles" class="col-md-6">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative card">
+          <div class="article col p-4 d-flex flex-column position-static">
+            <h4 class="article-name mb-0">{{ article.name }}</h4>
+            <p>Символов в статье: {{article.size}}</p>
+            <div class="article-snippet">
+              <p class="card-text mb-auto">{{ article.snippet }}</p>
+            </div>
+            <a target="_blank" rel="noopener noreferrer" href={{article.link}} class="stretched-link">Продолжить читать..</a>
+          </div>
+          <div [innerHTML]="article.image" class="col-auto d-none d-lg-block">
+          </div>
+        </div>
+      </div>
+</div>

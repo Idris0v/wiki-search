@@ -1,0 +1,23 @@
+.filter-select {
+  margin-top: -15px;
+  width: 60%;
+  list-style: none;
+  font-size: 1.1em;
+  color: rgb(105, 105, 105);
+  position: absolute;
+  left: 15px;
+  top: calc(50% + 25px);
+  padding: 0px;
+  height: auto;
+  overflow-y: auto;
+  z-index: 2;
+}
+
+.filter-select-list:hover {
+  color: #007bff;
+}
+
+.filter-select-list {
+  cursor: pointer;
+  padding: 5px 10px;
+}
