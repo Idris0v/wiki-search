@@ -1,49 +1,48 @@
 stages:
-  - prep
   - build
   - test
 
 
-prepare the car:
-  stage: prep
-  script:
-    - mkdir build
-    - cd build
-    - touch car.txt
-  artifacts:
-    paths:
-      - build/
+# prepare the car:
+#   stage: prep
+#   script:
+#     - mkdir build
+#     - cd build
+#     - touch car.txt
+#   artifacts:
+#     paths:
+#       - build/
 
-build car:
+build app:
+  image: node
   stage: build
   script:
-    - cd build
-    - echo "chassis" >> car.txt
-    - echo "wheels" >> car.txt
-    - echo "roof" >> car.txt
+    - npm i
+    - npm install -g @angular/cli
+    - ng build --prod
   artifacts:
     paths:
-      - build/
+      - ./dist
 
-author:
-  stage: build
-  script:
-    - mkdir meta
-    - cd meta
-    - echo $GITLAB_USER_NAME > author.txt
-    - cat author.txt
-  artifacts:
-    paths:
-      - meta/
+# author:
+#   stage: build
+#   script:
+#     - mkdir meta
+#     - cd meta
+#     - echo $GITLAB_USER_NAME > author.txt
+#     - cat author.txt
+#   artifacts:
+#     paths:
+#       - meta/
 
-test car:
-  stage: test
-  script:
-    - ls
-    - test -f build/car.txt
-    - cd build
-    - cat car.txt
-    - grep "chassis" car.txt
-    - grep "wheels" car.txt
-    - grep "roof" car.txt
+# test car:
+#   stage: test
+#   script:
+#     - ls
+#     - test -f build/car.txt
+#     - cd build
+#     - cat car.txt
+#     - grep "chassis" car.txt
+#     - grep "wheels" car.txt
+#     - grep "roof" car.txt
 
