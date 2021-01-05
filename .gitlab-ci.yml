@@ -29,6 +29,7 @@ build car:
       - build/
 
 author:
+  stage: build
   script:
     - mkdir meta
     - cd meta
