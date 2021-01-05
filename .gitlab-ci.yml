@@ -1,6 +1,6 @@
 stages:
-  - build
   - test
+  - build
 
 
 # prepare the car:
@@ -35,14 +35,11 @@ build app:
 #     paths:
 #       - meta/
 
-# test car:
-#   stage: test
-#   script:
-#     - ls
-#     - test -f build/car.txt
-#     - cd build
-#     - cat car.txt
-#     - grep "chassis" car.txt
-#     - grep "wheels" car.txt
-#     - grep "roof" car.txt
+test car:
+  image: node
+  stage: test
+  script:
+    - npm i
+    - npm install -g @angular/cli
+    - ng test
 
