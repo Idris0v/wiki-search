@@ -21,9 +21,6 @@ build car:
     - echo "chassis" >> car.txt
     - echo "wheels" >> car.txt
     - echo "roof" >> car.txt
-    - mkdir meta
-    - cd meta
-    - echo $GITLAB_USER_NAME > author.txt
   artifacts:
     paths:
       - build/
@@ -37,15 +34,16 @@ author:
     - cat author.txt
   artifacts:
     paths:
-      - build/
+      - meta/
 
 test car:
   stage: test
   script:
+    - ls
     - test -f build/car.txt
     - cd build
     - cat car.txt
     - grep "chassis" car.txt
     - grep "wheels" car.txt
-    - grep "wheels" car.txt
+    - grep "roof" car.txt
 
