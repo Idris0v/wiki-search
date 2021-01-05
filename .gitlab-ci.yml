@@ -17,9 +17,23 @@ prepare the car:
 build car:
   stage: build
   script:
+    - cd build
     - echo "chassis" >> car.txt
     - echo "wheels" >> car.txt
     - echo "roof" >> car.txt
+    - mkdir meta
+    - cd meta
+    - echo $GITLAB_USER_NAME > author.txt
+  artifacts:
+    paths:
+      - build/
+
+author:
+  script:
+    - mkdir meta
+    - cd meta
+    - echo $GITLAB_USER_NAME > author.txt
+    - cat author.txt
   artifacts:
     paths:
       - build/
