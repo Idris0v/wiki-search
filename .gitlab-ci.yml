@@ -41,5 +41,5 @@ test car:
   script:
     - npm i
     - npm install -g @angular/cli
-    - ng test
+    - ng test &
 
