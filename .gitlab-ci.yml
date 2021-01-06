@@ -57,6 +57,7 @@ test deployment:
     - curl "http://fresh-touch.surge.sh" | tac | tac | grep -q "$CI_COMMIT_SHORT_SHA"
 
 upadte cache:
+  stage: cache
   only:
     - schedules
   cache:
