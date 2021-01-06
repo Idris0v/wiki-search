@@ -5,15 +5,17 @@ stages:
   - deploy
   - deployment tests
 
-# build app:
-#   stage: build
-#   script:
-#     - npm i
-#     - npm install -g @angular/cli
-#     - ng build --prod
-#   artifacts:
-#     paths:
-#       - ./dist
+ build app:
+   stage: build
+   script:
+     - npm i
+     - npm install -g @angular/cli
+     - ng build --prod
+     - echo $CI_COMMIT_SHORT_SHA
+     - sed -i "s/%%VERSION%%/$CI_COMMIT_SHORT_SHA/" ./dist/demo/index.html
+   artifacts:
+     paths:
+       - ./dist
 
 
 # test car:
@@ -24,11 +26,11 @@ stages:
 #     - ng test &
 #     - sleep 10
 
-# deploy app:
-#   stage: deploy
-#   script:
-#     - npm i -g surge
-#     - surge --project ./dist/demo --domain fresh-touch.surge.sh
+ deploy app:
+   stage: deploy
+   script:
+     - npm i -g surge
+     - surge --project ./dist/demo --domain fresh-touch.surge.sh
 
 test deployment:
   image: alpine
