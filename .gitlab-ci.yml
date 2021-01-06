@@ -2,51 +2,35 @@ image: node
 
 stages:
   - build
-  - test
   - deploy
+  - deployment tests
 
-
-# prepare the car:
-#   stage: prep
-#   script:
-#     - mkdir build
-#     - cd build
-#     - touch car.txt
-#   artifacts:
-#     paths:
-#       - build/
-
-build app:
-  stage: build
-  script:
-    - npm i
-    - npm install -g @angular/cli
-    - ng build --prod
-  artifacts:
-    paths:
-      - ./dist
-
-# author:
+# build app:
 #   stage: build
 #   script:
-#     - mkdir meta
-#     - cd meta
-#     - echo $GITLAB_USER_NAME > author.txt
-#     - cat author.txt
+#     - npm i
+#     - npm install -g @angular/cli
+#     - ng build --prod
 #   artifacts:
 #     paths:
-#       - meta/
+#       - ./dist
 
-test car:
-  stage: test
-  script:
-    - npm i
-    - npm install -g @angular/cli
-    - ng test &
-    - sleep 10
+
+# test car:
+#   stage: test
+#   script:
+#     - npm i
+#     - npm install -g @angular/cli
+#     - ng test &
+#     - sleep 10
 
 deploy app:
   stage: deploy
   script:
     - npm i -g surge
     - surge --project ./dist/demo --domain fresh-touch.surge.sh
+
+test deployment:
+  stage: deployment tests
+  script:
+    - curl "http://fresh-touch.surge.sh" | tac | tac | grep -q "Wikipedia"
