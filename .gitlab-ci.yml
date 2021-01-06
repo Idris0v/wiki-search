@@ -1,6 +1,9 @@
+image: node
+
 stages:
-  - test
   - build
+  - test
+  - deploy
 
 
 # prepare the car:
@@ -14,7 +17,6 @@ stages:
 #       - build/
 
 build app:
-  image: node
   stage: build
   script:
     - npm i
@@ -36,10 +38,15 @@ build app:
 #       - meta/
 
 test car:
-  image: node
   stage: test
   script:
     - npm i
     - npm install -g @angular/cli
     - ng test &
+    - sleep 10
 
+deploy app:
+  stage: deploy
+  script:
+    - npm i -g surge
+    - surge --project ./dist/demo --domain fresh-touch.surge.sh
