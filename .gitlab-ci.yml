@@ -31,7 +31,7 @@ stages:
 #     - surge --project ./dist/demo --domain fresh-touch.surge.sh
 
 test deployment:
-  image: alpine
+  # image: alpine
   stage: deployment tests
   script:
     - curl "http://fresh-touch.surge.sh" | tac | tac | grep -q "Wikipedia"
