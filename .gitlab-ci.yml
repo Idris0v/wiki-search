@@ -4,8 +4,9 @@ stages:
   - build
   - deploy
   - deployment tests
+  - cache
 
-cache:
+cache: &global_cache
   policy: pull
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -13,6 +14,8 @@ cache:
 
 build app:
   stage: build
+  except:
+    - schedules
   script:
     - npm i
     - npm install -g @angular/cli
@@ -26,6 +29,8 @@ build app:
 
 # test car:
 #   stage: test
+#   except:
+#    - schedules
 #   script:
 #     - npm i
 #     - npm install -g @angular/cli
@@ -34,6 +39,8 @@ build app:
 
 deploy app:
   stage: deploy
+  except:
+    - schedules
   script:
     - npm i -g surge
     - surge --project ./dist/demo --domain fresh-touch.surge.sh
@@ -41,8 +48,19 @@ deploy app:
 test deployment:
   image: alpine
   stage: deployment tests
+  except:
+    - schedules
   cache: {}
   script:
     - apk add curl
     - curl "http://fresh-touch.surge.sh" | tac | tac | grep -q "loading"
     - curl "http://fresh-touch.surge.sh" | tac | tac | grep -q "$CI_COMMIT_SHORT_SHA"
+
+upadte cache:
+  only:
+    - schedules
+  cache:
+    <<: *global_cache
+    policy: push
+  script:
+    - npm i
