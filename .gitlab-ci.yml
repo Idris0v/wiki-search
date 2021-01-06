@@ -40,6 +40,7 @@ deploy app:
 test deployment:
   image: alpine
   stage: deployment tests
+  cache: {}
   script:
     - apk add curl
     - curl "http://fresh-touch.surge.sh" | tac | tac | grep -q "loading"
