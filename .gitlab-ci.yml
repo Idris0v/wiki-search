@@ -58,6 +58,8 @@ deploy production:
   environment:
     name: production
     url: https://$PRODUCTION_DOMAIN
+  when: manual
+  allow_failure: false
   except:
     - schedules
   script:
