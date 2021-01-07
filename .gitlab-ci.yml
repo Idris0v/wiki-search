@@ -13,6 +13,10 @@ cache: &global_cache
   paths:
     - ./node_modules
 
+variables:
+  STAGING_DOMAIN: fresh-touch-staging.surge.sh
+  PRODUCTION_DOMAIN: fresh-touch.surge.sh
+
 build app:
   stage: build
   except:
@@ -42,23 +46,23 @@ deploy staging:
   stage: deploy staging
   environment:
     name: staging
-    url: https://fresh-touch-staging.surge.sh
+    url: https://$STAGING_DOMAIN
   except:
     - schedules
   script:
     - npm i -g surge
-    - surge --project ./dist/demo --domain fresh-touch-staging.surge.sh
+    - surge --project ./dist/demo --domain $STAGING_DOMAIN
 
 deploy production:
   stage: deploy production
   environment:
     name: production
-    url: https://fresh-touch.surge.sh
+    url: https://$PRODUCTION_DOMAIN
   except:
     - schedules
   script:
     - npm i -g surge
-    - surge --project ./dist/demo --domain fresh-touch.surge.sh
+    - surge --project ./dist/demo --domain $PRODUCTION_DOMAIN
 
 test production:
   image: alpine
