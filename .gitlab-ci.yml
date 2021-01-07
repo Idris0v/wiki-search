@@ -2,8 +2,9 @@ image: node
 
 stages:
   - build
-  - deploy
-  - deployment tests
+  - deploy staging
+  - deploy production
+  - production tests
   - cache
 
 cache: &global_cache
@@ -37,17 +38,31 @@ build app:
 #     - ng test &
 #     - sleep 10
 
-deploy app:
-  stage: deploy
+deploy staging:
+  stage: deploy staging
+  environment:
+    name: staging
+    url: https://fresh-touch-staging.surge.sh
+  except:
+    - schedules
+  script:
+    - npm i -g surge
+    - surge --project ./dist/demo --domain fresh-touch-staging.surge.sh
+
+deploy production:
+  stage: deploy production
+  environment:
+    name: production
+    url: https://fresh-touch.surge.sh
   except:
     - schedules
   script:
     - npm i -g surge
     - surge --project ./dist/demo --domain fresh-touch.surge.sh
 
-test deployment:
+test production:
   image: alpine
-  stage: deployment tests
+  stage: production tests
   except:
     - schedules
   cache: {}
