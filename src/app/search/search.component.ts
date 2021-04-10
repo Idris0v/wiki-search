@@ -1,13 +1,13 @@
-import { selectLoading, selectqueryList } from './../store/selectors/selectors';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {FormControl} from '@angular/forms';
-import { map, takeUntil, debounceTime, switchMap } from 'rxjs/operators';
-import { Observable, EMPTY, ReplaySubject,  } from 'rxjs';
-import { Store, select } from '@ngrx/store';
-import { AppState } from '../store/state/app.state'
-import * as Actions from '../store/actions/actions'
+import { selectqueryList } from '../store/selectors/selectors';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, Observable, ReplaySubject, } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../store/state/app.state';
+import * as Actions from '../store/actions/actions';
 import { WikipediaService } from '../wikipedia.service';
-import { Article, Card } from '../types'
+import { Article, Card } from '../types';
 
 @Component({
   selector: 'app-search',
@@ -24,18 +24,18 @@ export class SearchComponent implements OnInit, OnDestroy {
   queries$: Observable<any[]> = this.store.pipe(select(selectqueryList));
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  constructor(private _wikipediaService: WikipediaService, private store: Store<AppState>) {}
+  constructor(private wikipediaService: WikipediaService, private store: Store<AppState>) {}
 
   ngOnInit() {
     const inputChange$ = this.queryField.valueChanges.pipe(
       debounceTime(300),
       map(result => result));
     this.suggestions$ = inputChange$.pipe(switchMap(resp =>
-      this._wikipediaService.getArticles(resp)
+      this.wikipediaService.getArticles(resp)
         .pipe(map((response: Article[]) => response[1]))
     ));
 
-    this.errorMessage$ = this._wikipediaService.getError();
+    this.errorMessage$ = this.wikipediaService.getError();
   }
 
   ngOnDestroy(): void {
@@ -45,8 +45,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   handleClick(value: string): void {
     this.store.dispatch(new Actions.SetLoading(true));
-    if(value.length > 0)
-      this._wikipediaService.getArticles(value)
+    if (value.length > 0) {
+      this.wikipediaService.getArticles(value)
         .pipe(takeUntil(this.destroy))
         .subscribe((articles: any[]) => {
           this.store.dispatch(new Actions.AddQuery({id: 4, query: value}));
@@ -54,28 +54,31 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.suggestions$ = EMPTY;
           this.searchValue = articles[0];
           articles.shift();
-          if(articles[0].length > 0){
-            this._wikipediaService.getImages(value)
+          if (articles[0].length > 0){
+            this.wikipediaService.getImages(value)
               .pipe(takeUntil(this.destroy))
               .subscribe((images: any) => {
               this.articles = this.generateCards(articles, images.query.pages);
               this.errorMessage$ = new Observable((observer) => { observer.next(''); });
               this.store.dispatch(new Actions.SetLoading(false));
-            })
+            });
           } else {
             this.articles = [];
             this.errorMessage$ = new Observable((observer) => { observer.next('Таких статей нет :('); });
           }
-        })
+        });
+    }
   }
 
   handleChange(value: string): void {
 
-    if(value.length > 0)
-      this.suggestions$ = this._wikipediaService.getArticles(value)
+    if (value.length > 0) {
+      this.suggestions$ = this.wikipediaService.getArticles(value)
         .pipe(map((response: any) => response[1]));
-    else
+    }
+    else {
       this.suggestions$ = EMPTY;
+    }
   }
 
   generateCards(articles, images): Card[] {
@@ -90,19 +93,20 @@ export class SearchComponent implements OnInit, OnDestroy {
         snippet: articles[1][i],
         link: articles[2][i],
         size: image.revisions[0].size,
-        image: (image !== undefined && image.hasOwnProperty('thumbnail') === true)
+        image: (image.hasOwnProperty('thumbnail') === true)
           ? `<img src=${image.thumbnail.source} width="200" height="250" alt="No image">`
           :  ''
-      })
-    };
+      });
+    }
 
     return cards;
   }
 
   sortCards(type: any){
-    if (this.articles)
+    if (this.articles) {
       this.selectedSortType = type;
-      switch(type){
+    }
+    switch (type){
         case 'descending':
           this.articles.sort((a, b) => a.size - b.size);
           break;

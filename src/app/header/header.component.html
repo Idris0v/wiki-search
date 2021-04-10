@@ -4,7 +4,7 @@
       <a href="#" class="navbar-brand d-flex">
         <strong>Поиск по Wikipedia</strong>
       </a>
-      <button class="float-right themeButton" (click)="changeIcon();" [innerHTML]="icon"></button>
+      <button class="float-right themeButton" (click)="changeTheme()" [innerHTML]="icon"></button>
     </div>
   </div>
   <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>

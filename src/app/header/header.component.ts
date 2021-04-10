@@ -1,5 +1,5 @@
-import { Store, select } from '@ngrx/store';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AppState } from '../store/state/app.state';
 import { selectLoading } from '../store/selectors/selectors';
 import { Observable } from 'rxjs/internal/Observable';
@@ -24,8 +24,10 @@ export class HeaderComponent implements OnInit {
     this.icon = this.isThemeLight
       ? '<i class="material-icons">brightness_5</i>'
       : '<i class="material-icons">brightness_2</i>';
-
-    this.toggleTheme.emit(!this.isThemeLight);
   }
 
+  changeTheme() {
+    this.changeIcon();
+    this.toggleTheme.emit(!this.isThemeLight);
+  }
 }
